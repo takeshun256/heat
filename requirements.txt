@@ -4,8 +4,8 @@ einops==0.4.1
 future==0.18.2
 imageio==2.16.1
 matplotlib==3.3.4
-MultiScaleDeformableAttention==1.0
-numpy==1.20.1
+# MultiScaleDeformableAttention==1.0
+# numpy==1.20.1
 opencv-python==4.4.0.44
 packaging==20.9
 Pillow==9.0.1 
@@ -19,8 +19,8 @@ scikit-image==0.19.2
 scikit-learn==1.0
 scipy==1.6.1
 six==1.15.0
-torch==1.5.1
-torchvision==0.6.1
+# torch==1.5.1
+# torchvision==0.6.1
 cairosvg==2.5.2
 svgwrite==1.4.2
 shapely==1.8.2
