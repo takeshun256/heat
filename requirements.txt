@@ -6,7 +6,8 @@ imageio
 matplotlib
 # MultiScaleDeformableAttention==1.0
 numpy
-opencv-python
+opencv-python==4.4.0.44
+opencv-python-headless==4.4.0.44
 packaging
 Pillow
 prometheus-client
