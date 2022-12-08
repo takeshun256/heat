@@ -1,4 +1,4 @@
-./data
+./data/
 .DS_Store
 viz/*
 *.tar
@@ -9,7 +9,8 @@ svg_*
 models/ops/build
 models/ops/dist
 models/ops/*egg-info
-__pycache__
-results
+__pycache__/
+results/
+checkpoints/
 montefloor_data
 .idea
