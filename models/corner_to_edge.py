@@ -140,7 +140,9 @@ def _get_edges(corners, edge_pairs):
     corners = corners.round()
     id_mapping = {old: new for new, old in enumerate(ind)}
 
-    all_ids = all_combibations[len(corners)]
+    # all_ids = all_combibations[len(corners)]
+    ids = np.arange(len(corners))
+    all_ids = np.array(list(itertools.combinations(ids, 2)))
     edges = corners[all_ids]
     labels = np.zeros(edges.shape[0])
 
@@ -208,7 +210,9 @@ def get_infer_edge_pairs(corners, confs):
     corners = corners[ind]  # sorted by y, then x
     confs = confs[ind]
 
-    edge_ids = all_combibations[len(corners)]
+    # edge_ids = all_combibations[len(corners)]
+    ids = np.arange(len(corners))
+    edge_ids = np.array(list(itertools.combinations(ids, 2)))
     edge_coords = corners[edge_ids]
 
     edge_coords = torch.tensor(np.array(edge_coords)).unsqueeze(0).long()

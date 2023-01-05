@@ -26,28 +26,30 @@ class HEAT(nn.Module):
         image_feats, feat_mask, all_image_feats = self.backbone(image)
 
         # get the positional encodings for all pixels
-        pixels, pixel_features = get_pixel_features(image_size=256)
+        pixels, pixel_features = get_pixel_features(image_size=512)
 
-        pixel_features = pixel_features.unsqueeze(0).repeat(image.shape[0], 1, 1, 1)
+        pixel_features = pixel_features.unsqueeze(0).repeat(image.shape[0], 1, 1, 1).to(image.device)
         preds_s1 = self.corner_model(image_feats, feat_mask, pixel_features, pixels, all_image_feats)
 
-	c_outputs = preds_s1
+        c_outputs = preds_s1
     	# get predicted corners
-    	c_outputs_np = c_outputs[0].detach().cpu().numpy()
-    	pos_indices = np.where(c_outputs_np >= 0.01)
-    	pred_corners = pixels[pos_indices]
-    	pred_confs = c_outputs_np[pos_indices]
-    	pred_corners, pred_confs = corner_nms(pred_corners, pred_confs, image_size=c_outputs.shape[1])
+        c_outputs_np = c_outputs[0].detach().cpu().numpy()
+        pos_indices = np.where(c_outputs_np >= 0.01)
+        pred_corners = pixels[pos_indices]
+        pred_confs = c_outputs_np[pos_indices]
+        pred_corners, pred_confs = corner_nms(pred_corners, pred_confs, image_size=c_outputs.shape[1])
 
-	pred_corners, pred_confs, edge_coords, edge_mask, edge_ids = get_infer_edge_pairs(pred_corners, pred_confs)
+        pred_corners, pred_confs, edge_coords, edge_mask, edge_ids = get_infer_edge_pairs(pred_corners, pred_confs)
+        edge_coords, edge_mask, edge_ids = edge_coords.to(image.device), edge_mask.to(image.device), edge_ids.to(image.device)
+        # edge_coords = edge_coords.to(image.device)
 
-	corner_nums = torch.tensor([len(pred_corners)]).to(image.device)
-    	max_candidates = torch.stack([corner_nums.max() * 3] * len(corner_nums), dim=0)
+        corner_nums = torch.tensor([len(pred_corners)]).to(image.device)
+        max_candidates = torch.stack([corner_nums.max() * 3] * len(corner_nums), dim=0)
 
-	all_pos_ids = set()
-    	all_edge_confs = dict()
+        all_pos_ids = set()
+        all_edge_confs = dict()
 
-    	for tt in range(3):
+        for tt in range(3):
     	    if tt == 0:
     	        gt_values = torch.zeros_like(edge_mask).long()
     	        gt_values[:, :] = 2
@@ -72,7 +74,7 @@ class HEAT(nn.Module):
     	    s2_preds_hb_np = s2_preds_hb[1, :].detach().cpu().numpy()
 
     	    selected_ids = selected_ids.squeeze().detach().cpu().numpy()
-    	    if tt != infer_times - 1:
+    	    if tt != 2:
     	        s2_preds_np = s2_preds_hb_np
 
     	        pos_edge_ids = np.where(s2_preds_np >= 0.9)
@@ -103,15 +105,15 @@ class HEAT(nn.Module):
     	            all_pos_ids.add(actual_id)
     	            all_edge_confs[actual_id] = s2_preds_np[pos_id]
 
-    	pos_edge_ids = list(all_pos_ids)
-    	edge_confs = [all_edge_confs[idx] for idx in pos_edge_ids]
-    	pos_edges = edge_ids[pos_edge_ids].cpu().numpy()
-    	edge_confs = np.array(edge_confs)
+        pos_edge_ids = list(all_pos_ids)
+        edge_confs = [all_edge_confs[idx] for idx in pos_edge_ids]
+        pos_edges = edge_ids[pos_edge_ids].cpu().numpy()
+        edge_confs = np.array(edge_confs)
 
         pred_corners, pred_confs, pos_edges = postprocess_preds(pred_corners, pred_confs, pos_edges)
-	pred_data = {
+        pred_data = {
             'corners': pred_corners,
             'edges': pos_edges,
         }
 
-    	return pred_data
+        return pred_data
