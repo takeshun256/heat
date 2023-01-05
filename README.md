@@ -160,6 +160,19 @@ CUDA_VISIBLE_DEVICES={gpu_ids} python train.py  --exp_dataset s3d_floorplan  --e
 With the default setting (e.g., model setup, batch size, etc.), training the full HEAT (i.e., the end-to-end corner and edge modules) needs at least 2 GPUs with ~16GB memory each. 
 
 
+## How to deploy with TorchServe
+
+Starting command
+
+```sh
+$ torchserve --start --ncs --model-store model-store --models heat=heat.mar --ts-config config.properties
+```
+
+Stop service
+
+```sh
+$ torchserve --stop
+```
 
 ## References
 
