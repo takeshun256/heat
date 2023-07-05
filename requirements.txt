@@ -1,3 +1,29 @@
-opencv-python-headless
-scikit-image
+Cython
+defusedxml
 einops
+future
+imageio
+matplotlib
+# MultiScaleDeformableAttention
+numpy
+opencv-python
+packaging
+Pillow
+prometheus-client
+prompt-toolkit
+ptyprocess
+pycparser
+Pygments
+python-dateutil
+scikit-image
+scikit-learn
+scipy
+six
+torch
+torchvision
+cairosvg
+svgwrite
+shapely
+
+# deploy時のerror対処
+pyyaml
