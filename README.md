@@ -166,6 +166,7 @@ Starting command
 
 1. `serve`ディレクトリ下に、`checkpoint.pth`を配置する。
 
+2. HEATのモデルをビルドして、デプロイする。
 ```sh
 $ cd serve
 $ docker build -t heat .
