@@ -164,14 +164,18 @@ With the default setting (e.g., model setup, batch size, etc.), training the ful
 
 Starting command
 
+1. `serve`ディレクトリ下に、`checkpoint.pth`を配置する。
+
 ```sh
-$ torchserve --start --ncs --model-store model-store --models heat=heat.mar --ts-config config.properties
+$ cd serve
+$ docker build -t heat .
+$ docker run -d --rm --gpus all -p 7070 -p 7071:7071 -p 8000:8000 -p 8001:8001 -p 8080:8080 -p 8081:8081 -p 8082:8082 heat
 ```
 
 Stop service
 
 ```sh
-$ torchserve --stop
+$ docker stop heat
 ```
 
 ## References
