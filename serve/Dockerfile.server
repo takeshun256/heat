@@ -24,5 +24,3 @@ RUN python -m pip install torchserve torch-model-archiver torch-workflow-archive
 COPY ../model_store/heat.mar /home/heat/model-store/heat.mar
 COPY ./config.properties /home/heat/config.properties
 
-# モデルをデプロイする
-CMD ["torchserve", "--start", "--ncs", "--model-store", "/home/heat/model-store", "--models", "heat=heat.mar", "--ts-config", "/home/heat/config.properties"]
