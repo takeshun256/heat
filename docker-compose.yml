@@ -1,21 +1,28 @@
 version: '3.8'
 
 services:
-  model_archiver:
+  archiver:
     build:
-      context: .
+      context: ./serve
       dockerfile: Dockerfile.archiver
     container_name: heat-archiver
     volumes:
-      - model_store:/home/heat/model-store
+      - type: bind
+        source: ./serve/checkpoints.pth
+        target: /home/heat/checkpoints.pth
+      - type: bind
+        source: ./model-store
+        target: /home/heat/model-store
 
-  model_server:
+  server:
     build:
-      context: .
+      context: ./serve
       dockerfile: Dockerfile.server
     container_name: heat-server
     volumes:
-      - model_store:/home/heat/model-store
+      - type: bind
+        source: ./model-store
+        target: /home/heat/model-store
     ports:
       - "7070:7070"
       - "7071:7071"
@@ -24,6 +31,3 @@ services:
       - "8080:8080"
       - "8081:8081"
       - "8082:8082"
-
-volumes:
-  model_store:
