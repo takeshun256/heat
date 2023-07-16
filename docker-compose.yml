@@ -20,6 +20,9 @@ services:
       - type: bind
         source: ./model-store
         target: /home/heat/model-store
+    working_dir: /home/heat
+    command: torch-model-archiver --model-name heat --version 1.0 --model-file heat.py --serialized-file checkpoint.pth --extra-files models.zip,datasets.zip,metrics.zip,utils.zip,infer.py --handler serve/handler.py --requirements-file requirements.txt --export-path model-store
+
 
   server:
     build:
@@ -46,3 +49,4 @@ services:
       - "8081:8081"
       - "8082:8082"
     command: torchserve --start --ncs --model-store /home/heat/model-store --models heat=heat.mar --ts-config /home/heat/config.properties
+    tty: true

@@ -28,7 +28,7 @@ rm-model:
 
 check-status:
 	        curl http://localhost:8080/ping
-		        curl http://localhost:8081/models
+			curl http://localhost:8081/models
 
 request-test:
 	        curl http://localhost:8080/predictions/$(model_name)/${model_version} -T ${image_path}

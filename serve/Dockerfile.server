@@ -21,6 +21,4 @@ RUN cd /home/serve && python ./ts_scripts/install_dependencies.py --cuda=cu117
 RUN python -m pip install torchserve torch-model-archiver torch-workflow-archiver
 
 # 必要なファイルのコピー
-COPY ../model_store/heat.mar /home/heat/model-store/heat.mar
 COPY ./config.properties /home/heat/config.properties
-
