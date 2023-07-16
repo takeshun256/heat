@@ -6,6 +6,13 @@ services:
       context: ./serve
       dockerfile: Dockerfile.archiver
     container_name: heat-archiver
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
     volumes:
       - type: bind
         source: ./serve/checkpoints.pth
@@ -19,6 +26,13 @@ services:
       context: ./serve
       dockerfile: Dockerfile.server
     container_name: heat-server
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
     volumes:
       - type: bind
         source: ./model-store
