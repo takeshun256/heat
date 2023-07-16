@@ -170,14 +170,14 @@ Starting command
 ```sh
 $ cd serve
 $ docker build -t heat .
-$ docker run -d --rm --gpus all -p 7070 -p 7071:7071 -p 8000:8000 -p 8001:8001 -p 8080:8080 -p 8081:8081 -p 8082:8082 heat
+$ docker run -d --rm --gpus all -p 7070:7070 -p 7071:7071 -p 8000:8000 -p 8001:8001 -p 8080:8080 -p 8081:8081 -p 8082:8082 heat
 ```
 
 3. デプロイされているか & 推論のリクエストを投げる。
 ```sh
 curl http://localhost:8080/ping
 curl http://localhost:8081/models
-curl http://localhost:8080/predictions/heat/1.0 -T sample.png
+curl http://localhost:8080/predictions/heat/1.0 -T ./sample.png
 ```
 
 Stop service
