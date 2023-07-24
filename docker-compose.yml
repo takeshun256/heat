@@ -28,6 +28,8 @@ services:
     build:
       context: ./serve
       dockerfile: Dockerfile.server
+    tty: true
+    stdin_open: true
     container_name: heat-server
     deploy:
       resources:
@@ -48,5 +50,6 @@ services:
       - "8080:8080"
       - "8081:8081"
       - "8082:8082"
-    command: torchserve --start --ncs --model-store /home/heat/model-store --models heat=heat.mar --ts-config /home/heat/config.properties
-    tty: true
+    entrypoint: bash -c ‘torchserve --start --ncs --model-store /home/heat/model-store --models heat=heat.mar --ts-config /home/heat/config.properties & tail -f /dev/null’
+
+
