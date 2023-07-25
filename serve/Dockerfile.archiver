@@ -25,4 +25,3 @@ COPY ./config.properties /home/heat/config.properties
 
 # モデルをアーカイブする
 RUN cd /home/heat && zip -r models.zip models && zip -r datasets.zip datasets && zip -r metrics.zip metrics &&zip -r utils.zip utils
-# RUN cd /home/heat && torch-model-archiver --model-name heat --version 1.0 --model-file heat.py --serialized-file checkpoint.pth --extra-files models.zip,datasets.zip,metrics.zip,utils.zip,infer.py --handler serve/handler.py --requirements-file requirements.txt --export-path model-store
