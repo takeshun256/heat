@@ -162,28 +162,44 @@ With the default setting (e.g., model setup, batch size, etc.), training the ful
 
 ## How to deploy with TorchServe
 
-Starting command
+start service
 
 1. `serve`ディレクトリ下に、`checkpoint.pth`を配置する。
 
-2. HEATのモデルをビルドして、デプロイする。
+
+2. HEATのモデルをアーカイブする。 (`model-store/heat.mar` が既にある場合は削除する)
 ```sh
-$ cd serve
-$ docker build -t heat .
-$ docker run -d --rm --gpus all -p 7070:7070 -p 7071:7071 -p 8000:8000 -p 8001:8001 -p 8080:8080 -p 8081:8081 -p 8082:8082 heat
+$ docker-compose up -d --build archiver
+```
+-> `model-store` 下に `heat.mar` が作成される。
+
+
+3. アーカイブされたHEATモデルをデプロイする。
+```sh
+$ docker-compose up -d --build server
 ```
 
-3. デプロイされているか & 推論のリクエストを投げる。
+
+4. デプロイされているかを確認する。
 ```sh
 curl http://localhost:8080/ping
-curl http://localhost:8081/models
+
+
+# curl: (56) Recv failure: Connection reset by peer のエラーが出るが原因は不明
+(curl http://localhost:8081/models)
+```
+
+
+5. 推論のリクエストを投げて、推論結果を受け取る。
+```sh
 curl http://localhost:8080/predictions/heat/1.0 -T ./sample.png
 ```
+
 
 Stop service
 
 ```sh
-$ docker stop heat
+$ docker-compose down
 ```
 
 ## References
